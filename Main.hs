@@ -8,10 +8,11 @@ import Data.Random.Extras (choice)
 import qualified Data.ByteString.Char8 as B
 import Network.SimpleIRC
 
+commandPrefix = "%"
 
 onMessage :: EventFunc
 onMessage server msg
-   | B.pack "%rms" `B.isPrefixOf` mMsg msg = do
+   | B.pack (commandPrefix ++ "rms") `B.isPrefixOf` mMsg msg = do
         r <- (sample . choice . lines) =<< readFile "puns.txt"
         sendMsg server chan (B.pack r)
    | "Amazon" `isIn` msg = hilightSend "https://stallman.org/amazon.html"
